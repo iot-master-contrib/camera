@@ -41,6 +41,7 @@ import {
     DragOutline,
     ExportOutline,
     ImportOutline,
+    PlaySquareOutline,
 } from '@ant-design/icons-angular/icons';
 
 import {API_BASE} from "iot-master-smart";
@@ -72,6 +73,7 @@ const icons: IconDefinition[] = [
     DragOutline,
     ExportOutline,
     ImportOutline,
+    PlaySquareOutline,
 ];
 
 export const appConfig: ApplicationConfig = {
@@ -83,6 +85,6 @@ export const appConfig: ApplicationConfig = {
         provideAnimations(),
         {provide: NZ_ICONS, useValue: icons},
         {provide: LOCALE_ID, useValue: "zh_CN"},
-        {provide: API_BASE, useValue: "/$gateway/api/"},
+        //{provide: API_BASE, useValue: "/$camera/api/"},
     ]
 };

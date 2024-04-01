@@ -27,11 +27,12 @@ export class CameraComponent {
     columns: SmartTableColumn[] = [
         {key: "id", sortable: true, label: "ID", keyword: true, link: (data) => `/camera/${data.id}`},
         {key: "name", sortable: true, label: "名称", keyword: true},
-        {key: "port", sortable: true, label: "端口", keyword: true},
+        {key: "url", sortable: true, label: "链接", keyword: true},
         {key: "created", sortable: true, label: "创建时间", date: true},
     ];
 
     operators: SmartTableOperator[] = [
+        {icon: 'play-square', title: '播放', link: data => `/play/${data.id}`},
         {icon: 'edit', title: '编辑', link: data => `/camera/${data.id}/edit`},
         {
             icon: 'delete', title: '删除', confirm: "确认删除？", action: data => {

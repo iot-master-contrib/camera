@@ -29,7 +29,8 @@ type Client struct {
 	ClientACK *time.Timer
 	StreamACK *time.Timer
 
-	queue chan *av.Packet
+	queue      chan *av.Packet
+	candidates []*webrtc.ICECandidate
 }
 
 type Stream struct {
@@ -165,6 +166,9 @@ func (c *Client) CreateAnswer(streams []av.CodecData, sdp string) (string, error
 		d.OnMessage(func(msg webrtc.DataChannelMessage) {
 			c.ClientACK.Reset(5 * time.Second)
 		})
+	})
+	pc.OnICECandidate(func(candidate *webrtc.ICECandidate) {
+		c.candidates = append(c.candidates, candidate)
 	})
 
 	if err = pc.SetRemoteDescription(offer); err != nil {

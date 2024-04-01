@@ -36,12 +36,11 @@ export class CameraDetailComponent implements OnInit {
     fields: SmartInfoItem[] = [
         {key: 'id', label: 'ID'},
         {key: 'name', label: '名称'},
-        {key: 'port', label: '端口'},
-        {key: 'disabled', label: '禁用'},
+        {key: "url", label: "链接"},
+        {key: "project_id", label: "项目ID"},
+        {key: "audio", label: "音频"},
+        {key: "disabled", label: "禁用"},
         {key: 'created', label: '创建时间', type: 'date'},
-        {key: "poller_period", label: "采集周期"},
-        {key: "poller_interval", label: "采集间隔"},
-        {key: "protocol_name", label: "通讯协议"},
         {key: 'description', label: '说明', span: 2},
     ];
 
