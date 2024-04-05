@@ -33,6 +33,7 @@ export class CameraEditComponent implements OnInit {
             default: 'rtsp://admin:admin@192.168.1.20:554/cam/realmonitor?channel=1&subtype=1'
         },
         {key: "project_id", label: "项目ID", type: "text"},
+        {key: "streamer_id", label: "推流器ID", type: "text"},
         {key: "audio", label: "音频", type: "switch"},
         {key: "disabled", label: "禁用", type: "switch"},
         {key: "description", label: "说明", type: "textarea"},

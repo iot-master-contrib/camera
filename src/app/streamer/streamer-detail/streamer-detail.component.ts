@@ -10,8 +10,8 @@ import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
-    selector: 'app-camera-detail',
-    templateUrl: './camera-detail.component.html',
+    selector: 'app-streamer-detail',
+    templateUrl: './streamer-detail.component.html',
     standalone: true,
     imports: [
         CommonModule,
@@ -26,9 +26,9 @@ import {NzMessageService} from "ng-zorro-antd/message";
         RouterLink,
         NzPopconfirmDirective,
     ],
-    styleUrls: ['./camera-detail.component.scss']
+    styleUrls: ['./streamer-detail.component.scss']
 })
-export class CameraDetailComponent implements OnInit {
+export class StreamerDetailComponent implements OnInit {
     id: string = ""
     data: any = {}
 
@@ -36,9 +36,6 @@ export class CameraDetailComponent implements OnInit {
     fields: SmartInfoItem[] = [
         {key: 'id', label: 'ID'},
         {key: 'name', label: '名称'},
-        {key: "url", label: "链接"},
-        {key: "project_id", label: "项目ID"},
-        {key: "audio", label: "音频"},
         {key: "disabled", label: "禁用"},
         {key: 'created', label: '创建时间', type: 'date'},
         {key: 'description', label: '说明', span: 2},
@@ -60,15 +57,15 @@ export class CameraDetailComponent implements OnInit {
     }
 
     load() {
-        this.rs.get(`camera/${this.id}`).subscribe(res => {
+        this.rs.get(`streamer/${this.id}`).subscribe(res => {
             this.data = res.data;
         })
     }
 
     delete() {
-        this.rs.get(`camera/${this.id}/delete`, {}).subscribe((res: any) => {
+        this.rs.get(`streamer/${this.id}/delete`, {}).subscribe((res: any) => {
             this.msg.success('删除成功');
-            this.router.navigateByUrl('/camera');
+            this.router.navigateByUrl('/streamer');
         });
     }
 }

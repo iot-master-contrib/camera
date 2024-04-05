@@ -6,16 +6,16 @@ import {
 } from "iot-master-smart";
 
 @Component({
-    selector: 'app-camera',
+    selector: 'app-cameras',
     standalone: true,
     imports: [
         CommonModule,
         SmartTableComponent,
     ],
-    templateUrl: './camera.component.html',
-    styleUrls: ['./camera.component.scss'],
+    templateUrl: './cameras.component.html',
+    styleUrls: ['./cameras.component.scss'],
 })
-export class CameraComponent {
+export class CamerasComponent {
     datum: any[] = [];
     total = 0;
     loading = false;

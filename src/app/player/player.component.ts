@@ -12,7 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 export class PlayerComponent implements OnInit {
 
     id: any = ''
-    uid: any = ''
+    camera: any;
 
     @ViewChild("video") video!: ElementRef<any>
 
@@ -22,66 +22,100 @@ export class PlayerComponent implements OnInit {
         }]
     };
 
-    pc!: RTCPeerConnection
-
+    //webrtc-streamer连接的参数
+    cid: any = ''
+    ws!: WebSocket
+    pc: RTCPeerConnection = new RTCPeerConnection()
     stream = new MediaStream();
-
-
 
     constructor(private rs: RequestService, private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
         this.id = this.route.snapshot.paramMap.get("id") || this.route.snapshot.queryParamMap.get("id")
-        this.play().then()
+        this.load()
     }
 
+    load() {
+        this.rs.get("camera/"+this.id).subscribe(res=>{
+            this.camera = res.data
+            this.connect()
+        })
+    }
 
-    async play() {
-        console.log('play', this.id)
+    send(type: string, data: any) {
+        console.log('[SEND] ===>', type, data)
 
-        this.pc = new RTCPeerConnection(this.config)
+        if (typeof data === "object") {
+            data = JSON.stringify(data)
+        }
+        let text = JSON.stringify({id: this.cid, type, data})
+        this.ws.send(text)
+    }
 
-        this.pc.onnegotiationneeded = async (event) => {
-            console.log('onnegotiationneeded', event)
-            let offer = await this.pc.createOffer();
-            await this.pc.setLocalDescription(offer);
-            this.connect(offer);
+    connect(){
+        this.ws = new WebSocket("ws://localhost:8080/streamer/test/connect")
+        this.ws.onerror = console.error
+
+        this.ws.onopen = (event) => {
+            console.log("websocket onopen")
+            this.send("connect", {url: "rtsp://localhost:8554/mystream"})
         }
 
-        this.pc.onicecandidate = (event) => {
-            console.log('onicecandidate', event)
-            //this.onIceCandidate(evt)
-            this.rs.post(`camera/${this.id}/addice/${this.uid}`, event.candidate).subscribe((res: any) => {
-            })
+        this.ws.onmessage = async (event)=> {
+            //console.log("<---", event.data)
+            let msg = JSON.parse(event.data)
+            console.log('[RECV] <===', msg.type, msg.data)
+
+            this.cid = msg.id
+            switch (msg.type) {
+                case "offer":
+                    await this.pc.setRemoteDescription(new RTCSessionDescription({type: 'offer', sdp: msg.data}))
+                    let answer = await this.pc.createAnswer()
+                    this.send("answer", answer.sdp)
+                    await this.pc.setLocalDescription(answer)
+                    break
+                case "answer":
+                    await this.pc.setRemoteDescription(new RTCSessionDescription({type: 'answer', sdp: msg.data}))
+                    break
+                case "candidate":
+                    if (msg.data)
+                        await this.pc.addIceCandidate(new RTCIceCandidate(JSON.parse(msg.data)))
+                    break
+                case "error":
+                    console.error("streamer error", msg.data)
+                    break
+            }
         }
-        this.pc.onicegatheringstatechange = (event) => {
-            console.log('onicegatheringstatechange', this.pc.iceConnectionState)
+
+        this.pc.onnegotiationneeded = async function () {
+            console.log("onnegotiationneeded")
+
+            // let offer = await pc.createOffer()
+            // await pc.setLocalDescription(offer)
+            // send("offer", offer.sdp)
         };
 
         this.pc.ontrack = (event) => {
-            console.log('ontrack', event)
+            console.log("ontrack", event.streams)
+
             this.stream.addTrack(event.track);
-            this.video.nativeElement.srcObject = this.stream;
+            // let videoElem = document.getElementById("video")
+            // videoElem.srcObject = stream;
+            this.video.nativeElement.srcObject = this.stream
         }
 
-        this.pc.oniceconnectionstatechange = (eevent) => {
-            console.log('oniceconnectionstatechange', this.pc.iceConnectionState)
+        this.pc.onicecandidate =  (event)=> {
+            console.log("candidate", event.candidate)
+            if (event.candidate)
+                this.send("candidate", event.candidate.toJSON())
         }
 
-        let offer = await this.pc.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true});
-        console.log('createOffer', offer)
+        this.pc.oniceconnectionstatechange =  (event)=> {
+            console.log("oniceconnectionstatechange", this.pc.iceConnectionState)
+        }
 
-        await this.pc.setLocalDescription(offer);
-        this.connect(offer);
-    }
-
-    connect(offer: any) {
-        this.rs.post(`camera/${this.id}/stream`, offer).subscribe((res: any) => {
-            console.log('get stream', res)
-            this.pc.setRemoteDescription(new RTCSessionDescription({type: "answer", sdp: res.data}))
-            this.uid = res.uuid
-        })
+        this.pc.addTransceiver("video", {'direction': 'sendrecv'})
     }
 
 }
