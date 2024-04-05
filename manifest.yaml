@@ -1,9 +1,11 @@
 id: camera
 version: 1.0
-name: 摄像头
+name: 视频监控
 menus:
-  admin:
-    name: 摄像头
-    items:
-      -   name: 摄像头
-          url: /$camera/camera
+    admin:
+        name: 视频监控
+        items:
+            -   name: 摄像头
+                url: /$camera/camera
+            -   name: 推流器
+                url: /$camera/streamer

@@ -2,9 +2,12 @@ package camera
 
 import (
 	"embed"
+	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/web"
+	"github.com/zgwit/webrtc-streamer/signaling"
 	"gopkg.in/yaml.v3"
 	"net/http"
 	"strings"
@@ -19,6 +22,16 @@ var manifest plugin.Manifest
 
 func Manifest() *plugin.Manifest {
 	return &manifest
+}
+
+var server signaling.Server
+
+var upper = &websocket.Upgrader{
+	//HandshakeTimeout: time.Second,
+	ReadBufferSize:  512,
+	WriteBufferSize: 512,
+	Subprotocols:    []string{"webrtc"},
+	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
 func init() {
@@ -43,6 +56,17 @@ func Startup() error {
 	//
 	////注册接口文档
 	//web.RegisterSwaggerDocs(group, "gateway")
+
+	web.Engine.GET("streamer/:id", func(ctx *gin.Context) {
+		ws, err := upper.Upgrade(ctx.Writer, ctx.Request, nil)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+
+		//注册
+		server.ConnectWorker(ctx.Param("id"), ws)
+	})
 
 	return nil
 }
