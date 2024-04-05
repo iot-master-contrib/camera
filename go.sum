@@ -203,8 +203,8 @@ github.com/zgwit/iot-master/v4 v4.0.21 h1:1NhxI91T9ZpVXYNJlN3e/R4izcMO+/zigGtdIz
 github.com/zgwit/iot-master/v4 v4.0.21/go.mod h1:SnEfecfl8G1G1YGvjZW8lZHDg6Y1/Kn6htfz/cEZs+Q=
 github.com/zgwit/swagger-files v1.0.0 h1:aE0iX7r3Nh/c1CTLHPqX9Oo/14Nti4xssHTNsQpylkc=
 github.com/zgwit/swagger-files v1.0.0/go.mod h1:1d6t8kgfOaE/IZW3KXMjp1K9EftV65QaQPs4LsQMabQ=
-github.com/zgwit/webrtc-streamer v0.0.1 h1:dDhPqab/ZJdmG0VDLG4vgrvlBhCWTpRNgqVOyh5fSpw=
-github.com/zgwit/webrtc-streamer v0.0.1/go.mod h1:1Bx0q4ZSfrTv+y5wD4JJLgYBAcNeld8p9ZpUKtNw278=
+github.com/zgwit/webrtc-streamer v0.0.2 h1:0+3TPlA4kYP73T8XxCf/igDs/uVOTMBX4t0FQauDuP4=
+github.com/zgwit/webrtc-streamer v0.0.2/go.mod h1:1Bx0q4ZSfrTv+y5wD4JJLgYBAcNeld8p9ZpUKtNw278=
 go.bug.st/serial v1.6.2 h1:kn9LRX3sdm+WxWKufMlIRndwGfPWsH1/9lCWXQCasq8=
 go.bug.st/serial v1.6.2/go.mod h1:UABfsluHAiaNI+La2iESysd9Vetq7VRdpxvjx7CmmOE=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=

@@ -46,6 +46,8 @@ func init() {
 
 	manifest.Startup = Startup
 	manifest.Shutdown = Shutdown
+
+	plugin.Register(&manifest)
 }
 
 func Startup() error {
@@ -65,7 +67,17 @@ func Startup() error {
 		}
 
 		//注册
-		server.ConnectWorker(ctx.Param("id"), ws)
+		server.ConnectStreamer(ctx.Param("id"), ws)
+	})
+
+	//这里没有鉴权了
+	web.Engine.GET("streamer/:id/connect", func(ctx *gin.Context) {
+		ws, err := upper.Upgrade(ctx.Writer, ctx.Request, nil)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		server.ConnectViewer(ctx.Param("id"), ws)
 	})
 
 	return nil

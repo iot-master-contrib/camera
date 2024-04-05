@@ -1,10 +1,8 @@
 package camera
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/web/curd"
 	"time"
 )
@@ -35,14 +33,4 @@ func init() {
 	api.Register("POST", "camera/:id", curd.ParseParamStringId, curd.ApiUpdate[Camera]())
 	api.Register("GET", "camera/:id", curd.ParseParamStringId, curd.ApiGet[Camera]())
 	api.Register("GET", "camera/:id/delete", curd.ParseParamStringId, curd.ApiDelete[Camera]())
-
-	api.Register("GET", "camera/:id/connect", func(ctx *gin.Context) {
-		ws, err := upper.Upgrade(ctx.Writer, ctx.Request, nil)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		server.ConnectViewer(ctx.Param("id"), ws)
-	})
-
 }

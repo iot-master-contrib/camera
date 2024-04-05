@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gorilla/websocket v1.5.1
 	github.com/zgwit/iot-master/v4 v4.0.21
-	github.com/zgwit/webrtc-streamer v0.0.1
+	github.com/zgwit/webrtc-streamer v0.0.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
