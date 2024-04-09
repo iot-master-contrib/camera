@@ -55,7 +55,7 @@ export class PlayerComponent implements OnInit {
 
     connect() {
         //ws://localhost:8080/streamer/test/connect
-        let url = location.protocol.replace("http", "w")
+        let url = location.protocol.replace("http", "ws")
             + "//" + location.host + "/streamer/" + this.camera.streamer_id + "/connect"
         this.ws = new WebSocket(url)
         this.ws.onerror = console.error
