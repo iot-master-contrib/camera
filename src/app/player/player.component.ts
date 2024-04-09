@@ -37,7 +37,7 @@ export class PlayerComponent implements OnInit {
     }
 
     load() {
-        this.rs.get("camera/"+this.id).subscribe(res=>{
+        this.rs.get("camera/" + this.id).subscribe(res => {
             this.camera = res.data
             this.connect()
         })
@@ -53,16 +53,19 @@ export class PlayerComponent implements OnInit {
         this.ws.send(text)
     }
 
-    connect(){
-        this.ws = new WebSocket("ws://localhost:8080/streamer/test/connect")
+    connect() {
+        //ws://localhost:8080/streamer/test/connect
+        let url = location.protocol.replace("http", "w")
+            + "//" + location.host + "/streamer/" + this.camera.streamer_id + "/connect"
+        this.ws = new WebSocket(url)
         this.ws.onerror = console.error
 
         this.ws.onopen = (event) => {
             console.log("websocket onopen")
-            this.send("connect", {url: "rtsp://localhost:8554/mystream"})
+            this.send("connect", {url: this.camera.url})
         }
 
-        this.ws.onmessage = async (event)=> {
+        this.ws.onmessage = async (event) => {
             //console.log("<---", event.data)
             let msg = JSON.parse(event.data)
             console.log('[RECV] <===', msg.type, msg.data)
@@ -105,13 +108,13 @@ export class PlayerComponent implements OnInit {
             this.video.nativeElement.srcObject = this.stream
         }
 
-        this.pc.onicecandidate =  (event)=> {
+        this.pc.onicecandidate = (event) => {
             console.log("candidate", event.candidate)
             if (event.candidate)
                 this.send("candidate", event.candidate.toJSON())
         }
 
-        this.pc.oniceconnectionstatechange =  (event)=> {
+        this.pc.oniceconnectionstatechange = (event) => {
             console.log("oniceconnectionstatechange", this.pc.iceConnectionState)
         }
 
