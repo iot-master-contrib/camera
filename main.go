@@ -31,7 +31,7 @@ func init() {
 	boot.Register("camera", &boot.Task{
 		Startup:  Startup,
 		Shutdown: Shutdown,
-		Depends:  []string{"database"},
+		Depends:  []string{"database", "web"},
 	})
 }
 
