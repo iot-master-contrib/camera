@@ -4,25 +4,15 @@ import (
 	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/boot"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/web"
 	"github.com/zgwit/webrtc-streamer/signaling"
-	"gopkg.in/yaml.v3"
 	"net/http"
-	"strings"
 )
 
 //go:embed all:www
 var wwwFiles embed.FS
-
-//go:embed manifest.yaml
-var _manifest string
-var manifest plugin.Manifest
-
-func Manifest() *plugin.Manifest {
-	return &manifest
-}
 
 var server signaling.Server
 
@@ -38,16 +28,11 @@ func init() {
 	//前端静态文件
 	web.Static.Put("/$camera", http.FS(wwwFiles), "www", "index.html")
 
-	d := yaml.NewDecoder(strings.NewReader(_manifest))
-	err := d.Decode(&manifest)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	manifest.Startup = Startup
-	manifest.Shutdown = Shutdown
-
-	plugin.Register(&manifest)
+	boot.Register("camera", &boot.Task{
+		Startup:  Startup,
+		Shutdown: Shutdown,
+		Depends:  []string{"database"},
+	})
 }
 
 func Startup() error {
