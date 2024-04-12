@@ -201,6 +201,8 @@ github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZ
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/zgwit/iot-master/v4 v4.1.0 h1:kOaRHVpeTT/4upM70qa6sHCfySi1DWRR1rVh6Cm8mN8=
 github.com/zgwit/iot-master/v4 v4.1.0/go.mod h1:OoX2e3ksBrGl0Rw5txQ/3AxSYQePa+EgTfZ4/SGvnwo=
+github.com/zgwit/iot-master/v4 v4.1.1 h1:cHWMDZQt/B1zNd+GejnAfn6tBQdfXcoIFKsL37WeNvg=
+github.com/zgwit/iot-master/v4 v4.1.1/go.mod h1:fG8A2FdhrqOT6MLR8YF1ygAD24HEWoMLfhBvaxliqVw=
 github.com/zgwit/swagger-files v1.0.0 h1:aE0iX7r3Nh/c1CTLHPqX9Oo/14Nti4xssHTNsQpylkc=
 github.com/zgwit/swagger-files v1.0.0/go.mod h1:1d6t8kgfOaE/IZW3KXMjp1K9EftV65QaQPs4LsQMabQ=
 github.com/zgwit/webrtc-streamer v0.0.2 h1:0+3TPlA4kYP73T8XxCf/igDs/uVOTMBX4t0FQauDuP4=
